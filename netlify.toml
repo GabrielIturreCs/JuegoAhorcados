@@ -1,13 +1,10 @@
 [build]
-  base = ""
-  publish = "dist/serviceangular/browser"
-  command = "npm run build --prod"
+  base = "." # Directorio base
+  publish = "dist/serviceangular/browser/browser" # Actualiza esta ruta
+  command = "npm run build --prod" # Comando para construir la aplicación
 
-[functions]
-  directory = "netlify/functions"
-
-# Configuración para redirecciones
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  force = true
