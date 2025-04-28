@@ -13,34 +13,24 @@ const app = express();
 const commonEngine = new CommonEngine();
 
 /**
- * Example Express Rest API endpoints can be defined here.
- * Uncomment and define endpoints as necessary.
- *
- * Example:
- * ```ts
- * app.get('/api/**', (req, res) => {
- *   // Handle API request
- * });
- * ```
- */
-
-/**
- * Serve static files from /browser
+ * Serve static files from /browser (angular build output for the browser)
  */
 app.get(
   '**',
   express.static(browserDistFolder, {
     maxAge: '1y',
-    index: 'index.html'
+    index: 'index.html',
   }),
 );
 
 /**
- * Handle all other requests by rendering the Angular application.
+ * Handle all requests by rendering the Angular app
+ * Ensure that Netlify is compatible by rendering using `commonEngine`
  */
 app.get('**', (req, res, next) => {
   const { protocol, originalUrl, baseUrl, headers } = req;
 
+  // Use the SSR CommonEngine render method to handle all routes
   commonEngine
     .render({
       bootstrap,
@@ -50,7 +40,10 @@ app.get('**', (req, res, next) => {
       providers: [{ provide: APP_BASE_HREF, useValue: baseUrl }],
     })
     .then((html) => res.send(html))
-    .catch((err) => next(err));
+    .catch((err) => {
+      console.error('SSR Render Error:', err);
+      next(err);
+    });
 });
 
 /**
