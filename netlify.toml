@@ -1,7 +1,6 @@
 [build]
-  base = "." # Directorio base
-  publish = "dist/serviceangular/browser/browser" # Actualiza esta ruta
-  command = "npm run build --prod" # Comando para construir la aplicación
+  publish = "dist/serviceangular/browser"
+  command = "ng build --configuration production"
 
 [[redirects]]
   from = "/*"
