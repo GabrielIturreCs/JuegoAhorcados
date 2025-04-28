@@ -6,15 +6,17 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import bootstrap from './main.server';
 
+// Directorios de salida
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
 const indexHtml = join(serverDistFolder, 'index.server.html');
 
+// Crear la aplicación Express
 const app = express();
 const commonEngine = new CommonEngine();
 
 /**
- * Serve static files from /browser (angular build output for the browser)
+ * Servir archivos estáticos desde /browser (salida de la construcción de Angular)
  */
 app.get(
   '**',
@@ -25,12 +27,12 @@ app.get(
 );
 
 /**
- * Handle all requests by rendering the Angular app using CommonEngine for SSR
+ * Manejar todas las solicitudes renderizando la aplicación Angular utilizando SSR con CommonEngine
  */
 app.get('**', (req, res, next) => {
   const { protocol, originalUrl, baseUrl, headers } = req;
 
-  // Render Angular app using SSR with CommonEngine
+  // Renderizar la aplicación Angular usando SSR con CommonEngine
   commonEngine
     .render({
       bootstrap,
@@ -47,8 +49,8 @@ app.get('**', (req, res, next) => {
 });
 
 /**
- * Start the server if this module is the main entry point.
- * The server listens on the port defined by the `PORT` environment variable, or defaults to 4000.
+ * Iniciar el servidor si este módulo es el punto de entrada principal.
+ * El servidor escucha en el puerto definido por la variable de entorno `PORT`, o por defecto en el puerto 4000.
  */
 const port = process.env['PORT'] || 4000;
 if (import.meta.url === `file://${__filename}`) {
