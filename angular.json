@@ -11,7 +11,7 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular-devkit/build-angular:browser", 
           "options": {
             "outputPath": "dist/serviceangular/browser",
             "index": "src/index.html",
@@ -21,7 +21,7 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "src/_redirects",  
+              "src/_redirects",
               {
                 "glob": "**/*",
                 "input": "public"
@@ -33,12 +33,7 @@
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-            ],
-            "server": "src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            ]
           },
           "configurations": {
             "production": {
@@ -88,7 +83,7 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
-              "src/_redirects", 
+              "src/_redirects",
               {
                 "glob": "**/*",
                 "input": "public"
