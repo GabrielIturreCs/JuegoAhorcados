@@ -1,0 +1,80 @@
+<br>
+<br>
+<div class="container my-5">
+<!-- Mostrar categorías solo si no hay categoría seleccionada -->
+<!-- Si NO hay categoría seleccionada, mostramos las categorías -->
+<div *ngIf="!categoriaSeleccionadaActual" class="row d-flex justify-content-center mb-4">
+  <h1 class="text-danger">Bienvenido al juego del Ahorcado</h1>
+  <h2 class="text-dark text-center">Selecciona una Categoria para Jugar</h2>
+
+  <div *ngFor="let item of categorias; let i = index" class="col-6 col-md-3 p-2">
+    <button class="btn btn-warning w-100 m-1 animate__animated animate__bounceIn categoria-btn" (click)="categoriaSeleccionada(item)">
+      {{ item }}
+    </button>
+  </div>
+</div>
+
+<!-- Si SÍ hay categoría seleccionada, mostramos un H2 -->
+<div *ngIf="categoriaSeleccionadaActual" class="text-center mb-4">
+  <h2 class="text-dark animate__animated animate__fadeIn">
+    La categoría seleccionada fue: {{ categoriaSeleccionadaActual }}
+  </h2>
+</div>
+  <div class="row d-flex align-items-center">
+    <div class="col-lg-6 text-center">
+      <!-- Imagen cambia según las vidas restantes -->
+      <img [src]="getImage()" class="imagen-fija img-fluid rounded animate__animated animate__zoomIn" alt="">
+    </div>
+
+    <!-- Contenedor para centrar el teclado, palabra y guiones entre la imagen y las categorías -->
+    <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center">
+      <!-- Mostrar el teclado y otros elementos solo si se ha seleccionado una categoría -->
+      <div *ngIf="categoriaSeleccionadaActual" class="text-center">
+        <h2 class="text-info animate__animated animate__fadeIn">
+          ¡Ahora elige una letra!
+        </h2>
+
+        <div class="teclado d-flex flex-wrap justify-content-center animate__animated animate__zoomIn mb-4">
+          <div *ngFor="let item of letras; let i = index">
+            <button class="btn btn-primary btn-lg m-2" (click)="letraSeleccionada(item)">
+              {{ item }}
+            </button>
+          </div>
+        </div>
+
+  
+
+        <div class="palabra-container">
+          <div class="guiones d-flex justify-content-center mt-3">
+            <span *ngFor="let guion of guiones; let i = index" class="guion-container mx-2">
+              <span class="letra invisible">{{ palabraAleatoria[i] }}</span> <!-- Letra invisible -->
+              <span class="guion">{{ guion }}</span> <!-- Guion bajo -->
+            </span>
+          </div>
+        </div>
+
+        <p class="text-center mt-4 fs-4">Vidas restantes: {{ vidasRestantes }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Victoria -->
+  <div *ngIf="juegoGanado" class="modal animate__animated animate__fadeIn">
+    <div class="modal-content">
+      <span class="close" (click)="juegoGanado = false">&times;</span>
+      <h2 class="text-success">¡Ganaste!</h2>
+      <p class="fs-5">La palabra era: {{ palabraAleatoria }}</p>
+      <button class="btn btn-success mt-3" (click)="reiniciarJuego()">Jugar de nuevo</button>
+    </div>
+  </div>
+
+  <!-- Modal de Derrota -->
+  <div *ngIf="vidasRestantes === 0" class="modal animate__animated animate__fadeIn">
+    <div class="modal-content">
+      <span class="close" (click)="reiniciarJuego()">&times;</span>
+      <h2 class="text-danger">¡Perdiste!</h2>
+      <p class="fs-5 text-danger">La palabra era: {{ palabraAleatoria }}</p>
+      <button class="btn btn-danger mt-3" (click)="reiniciarJuego()">Jugar de nuevo</button>
+    </div>
+  </div>
+</div>
