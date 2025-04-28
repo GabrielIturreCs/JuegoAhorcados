@@ -5,3 +5,9 @@
 
 [functions]
   directory = "netlify/functions"
+
+# Configuración para redirecciones
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
