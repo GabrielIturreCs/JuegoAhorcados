@@ -1,5 +1,6 @@
+import { CommonEngine } from '@angular/ssr/node';
+import { render } from '@netlify/angular-runtime/common-engine.mjs';
 import { APP_BASE_HREF } from '@angular/common';
-import { CommonEngine, isMainModule } from '@angular/ssr/node';
 import express from 'express';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -24,13 +25,12 @@ app.get(
 );
 
 /**
- * Handle all requests by rendering the Angular app
- * Ensure that Netlify is compatible by rendering using `commonEngine`
+ * Handle all requests by rendering the Angular app using CommonEngine for SSR
  */
 app.get('**', (req, res, next) => {
   const { protocol, originalUrl, baseUrl, headers } = req;
 
-  // Use the SSR CommonEngine render method to handle all routes
+  // Render Angular app using SSR with CommonEngine
   commonEngine
     .render({
       bootstrap,
@@ -50,8 +50,8 @@ app.get('**', (req, res, next) => {
  * Start the server if this module is the main entry point.
  * The server listens on the port defined by the `PORT` environment variable, or defaults to 4000.
  */
-if (isMainModule(import.meta.url)) {
-  const port = process.env['PORT'] || 4000;
+const port = process.env['PORT'] || 4000;
+if (import.meta.url === `file://${__filename}`) {
   app.listen(port, () => {
     console.log(`Node Express server listening on http://localhost:${port}`);
   });
