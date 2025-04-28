@@ -1,0 +1,7 @@
+[build]
+  base = ""
+  publish = "dist/serviceangular/browser"
+  command = "npm run build --prod"
+
+[functions]
+  directory = "netlify/functions"
